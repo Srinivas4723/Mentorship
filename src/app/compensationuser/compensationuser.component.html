@@ -1,0 +1,89 @@
+<div >
+    <br/>
+    <h2>Your Plans are here.....</h2>
+    <div class="d-flex flex-row-reverse p-2 ">
+        <select (change)="onTableSizeChange($event)">
+            <option *ngFor="let size of tablesizes" [ngValue]="size">{{size}}</option>
+        </select>
+    </div>    
+    
+    <table id="excel-table" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>S. No</th>
+          <th >Partner Name</th>
+          <th>Compensation Plan</th>
+          <th>Methodology</th>
+          <th>From Date</th>
+          <th>To Date</th>
+          <th>Minimum</th>
+          <th>Maximum</th>
+          <th>Percentage</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody >
+        <ng-container *ngFor="let plan of plans | paginate: { itemsPerPage: tablesize, currentPage:currentpage };, let i = index">
+        <tr >
+          <td [attr.rowspan]="plan.methods.length+1">{{i+1}}</td>
+         <td  [attr.rowspan]="plan.methods.length+1">
+           {{plan.partnername}}
+         </td>
+         <td  [attr.rowspan]="plan.methods.length+1">
+          {{plan.compensationplan}}
+        </td>
+        <td [attr.rowspan]="plan.methods.length+1">
+          {{plan.compensationmethodology}}
+        </td>
+        <td [attr.rowspan]="plan.methods.length+1">
+          {{plan.fromdate}}
+        </td>
+        <td [attr.rowspan]="plan.methods.length+1">
+          {{plan.todate}}
+        </td>
+        <td>{{plan.methods[0].minimum}}</td>
+        <td>{{plan.methods[0].maximum}}</td>
+        <td>{{plan.methods[0].percentage}}</td>
+        <td >
+          <!-- <img  (click)="addCancelplan()" width="20" height="20" src="/assets/add-icon.png"  alt="add-icon" title="Add New plan"/>&nbsp; -->
+          <img width="25" height="25" (click)="deleteplan(plan.planid,0)" src="/assets/delete-icon.png"  alt="delete-icon" title="Delete plan"/>
+        </td>
+        </tr>
+        <tr *ngFor="let method of plan.methods; let j = index">
+          <td *ngIf="j!=0">{{method.minimum}}</td>
+          <td *ngIf="j!=0">{{method.maximum}}</td>
+          <td *ngIf="j!=0">{{method.percentage}}</td>
+          <td *ngIf="j!=0">
+            <!-- <img  (click)="addCancelplan()" width="20" height="20" src="/assets/add-icon.png"  alt="add-icon" title="Add New plan"/>&nbsp; -->
+           <img  (click)="deleteplan(plan.planid,j)" width="25" height="20" src="/assets/delete-icon.png"  alt="delete-icon" title="Delete plan"/>
+          </td>
+        </tr>
+      </ng-container>
+      <tr >
+        <td></td>
+        <td width="130px">
+            <input [(ngModel)]="form.partnername" class="form-control"   type="text" id="partnername">
+            
+        </td>
+        <td><input [(ngModel)]="form.compensationplan" class="form-control" type="text" id="compensationplan"></td>
+        <td>
+          <select [(ngModel)]="form.compensationmethodology" class="form-control" id="compensationmethodology">
+            <option value="">--select--</option>
+            <option Value="VOLUME">VOLUME</option>
+            <option Value="REVENUE">REVENUE</option>
+          </select>
+        </td>
+        <td ><input class="form-control" id="fromdate"  [(ngModel)]="form.fromdate" [min]="today | date:'yyyy-MM-dd'" type="date"></td>
+        <td ><input class="form-control" id="todate" [(ngModel)]="form.todate" [min]="getMinToDate() | date:'yyyy-MM-dd'" type="date"></td>
+        <td><input [(ngModel)]="form.minimum" id="minimum" class="form-control" [min]="1" type="number"></td>
+        <td><input  [(ngModel)]="form.maximum" id="maximum" class="form-control" [min]="1" type="number"></td>
+        <td><input  [(ngModel)]="form.percentage" id="percentage" class="form-control" [min]="1" type="number"></td>
+        <td >
+            <img width="30" height="35" (click)="savePlan()" src="/assets/save-icon.png" alt="save-icon" title="Save Plan">
+          <!-- <img width="25" height="35" (click)="addCancelplan()" src="/assets/cancel-icon.png" alt="cancel-icon" title="Cancel Plan"> -->
+        </td>
+      </tr>
+    </tbody>
+    </table>
+    <pagination-controls (pageChange)="pagechange($event)"></pagination-controls> 
+    </div>

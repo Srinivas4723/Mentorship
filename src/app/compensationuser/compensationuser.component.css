@@ -1,0 +1,17 @@
+.error{
+    border: 1px solid red;
+    background-color:  rgb(255,206,206);
+}
+th{
+    padding:8px;
+    background-color: #61b1e2;
+    color:white;
+}
+td{
+    vertical-align: middle;
+    justify-content: center;
+    align-content: center;
+}
+.red{
+    color:red;
+}

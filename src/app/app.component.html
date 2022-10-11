@@ -1,0 +1,20 @@
+<div id="app">
+  <div class="toolbar">
+    <img width="50" alt="Logo" src="assets/logo.png"/> 
+    <h2>Compensation Partner System</h2>
+    <div class="spacer"></div>
+    <div *ngIf="!isLoggedIn">
+      <a class="btn btn-light" routerLink="authorsignup">AuthorSignup</a>
+      <a class="btn btn-light" routerLink="authorsignin">AuthorSignIn</a>
+    </div>
+    <div *ngIf="isLoggedIn">
+      <button class="btn btn-light" (click)="logout()">Sign Out</button>
+      <img style="width:40px;" class="rounded-pill" alt="avatar " src="assets/avt.png">
+    </div>
+    
+  </div> 
+</div> 
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
