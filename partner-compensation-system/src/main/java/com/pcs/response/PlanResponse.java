@@ -1,5 +1,9 @@
 package com.pcs.response;
 
+import java.time.LocalDate;
+
+import com.pcs.enums.CompensationMethodology;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +12,10 @@ import lombok.Setter;
 public class PlanResponse {
 	private String partnername;
 	private String compensationplan;
-	private PlanType volume;
-	private PlanType revenue;
-	private Long partnerNameCount;
-	private Long compensationPlanCount;
+	private CompensationMethodology compensationmethodology;
+	private LocalDate fromdate;
+	private LocalDate todate;
+	private Long minimum;
+	private Long maximum;
+	private Long percentage;
 }

@@ -1,21 +1,29 @@
 package com.pcs.model;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SecondaryTable;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.pcs.enums.CompensationMethodology;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +31,12 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@Table(	name = "Plans")
+@Table(	name = "plan")
 public class Plan {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int planid;
+	@GeneratedValue
+	private Long planid;
 	
 	@NotBlank(message = "Partner Name Cannot not be Blank")
 	@Size(min = 3, message = "Minimum size id 3")
@@ -40,36 +48,20 @@ public class Plan {
 	
 	@Enumerated(EnumType.STRING)
 	@NotNull(message="PlanType Cannot be Blank")
-	private PlanTypes plantype;
+	private CompensationMethodology compensationmethodology;
 	
-	@NotNull(message = "minimum value cannot be null")
-	@Min(value = 1, message = "minimum value cannot be less than Zero")
-	private int minimum;
-
-	@NotNull(message = "maximum value cannot be null")
-	@Min(value = 1, message = "Volume - maximum value cannot be less than One")
-	private int maximum;
-
-	@NotNull(message = "percentage value cannot be null")
-	@Min(value = 1, message = "percentage value cannot be less than Zero")
-	private int percentage;
+	@NotNull(message="From Data Cannot be Null")
+	private LocalDate fromdate;
 	
-//	@NotNull(message = "Revenue - minimum value cannot be null")
-//	@Min(value = 0, message = "Revenue - minimum value cannot be less than Zero")
-//	private int revenuemin;
-//
-//	@NotNull(message = "Revenue - maximum value cannot be null")
-//	@Min(value = 1, message = "Revenue - maximum value cannot be less than One")
-//	private int revenuemax;
-//
-//	@NotNull(message = "Revenue - percentage value cannot be null")
-//	@Min(value = 0, message = "Revenue - percentage value cannot be less than zero")
-//	private int revenuepercent;
+	@NotNull(message="From Data Cannot be Null")
+	private LocalDate todate;
 	
-//	@NotNull(message="From Date cannot be Blank")
-//	private LocalDate fromdate;
-//	
-//	@NotNull(message="To Date cannot be Blank")
-//	private LocalDate todate;
-
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="planid",referencedColumnName="planid")
+	private List<@Valid Method> methods;
+	
+//	@ManyToMany(targetEntity=Compensation.class,cascade=CascadeType.ALL)
+//	@JoinColumn(name="planid",referencedColumnName="userid")
+	private Long userid;
+	
 }

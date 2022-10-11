@@ -1,4 +1,4 @@
-package com.pcs.model;
+package com.pcs.enums;
 
 public enum Role {
 	COMPENSATION,

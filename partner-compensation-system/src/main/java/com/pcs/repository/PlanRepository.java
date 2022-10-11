@@ -3,25 +3,27 @@ package com.pcs.repository;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.constraints.NotNull;
-
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.pcs.enums.CompensationMethodology;
 import com.pcs.model.Plan;
-import com.pcs.model.PlanTypes;
 
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, Long> {
+	Optional<Plan> findByPartnernameAndCompensationplanAndCompensationmethodology(String partnername,String compensationplan,CompensationMethodology compensationmethodology);
+
+	List<Plan> findAllByUserid(Long userid, Sort sort);
+
+	Optional<Plan> findByPlanidAndUserid(Long planid, Long userid);
+
+	//Optional<Plan> findByPlanid(Long planid);
+
+	//List<Plan> findAllByUserid(Long userid, Sort by);
+
+	//List<Plan> findAllByUserid(Long userid, Sort by);
 	
-	List<Plan> findAllByPartnernameAndCompensationplanAndPlantype(String partnername,String compensationplan,PlanTypes plantype);
-
-	List<Plan> findAllByPlantype(PlanTypes revenue);
-	
-	Long countByPartnernameAndCompensationplanAndPlantype(String partnername,String compensationplan,PlanTypes plantype);
-
-
-	Long countByPartnernameAndPlantype(String partnername,PlanTypes plantype);
-
-	Long countByCompensationplanAndPlantype(String compensationplan, PlanTypes volume);
 }

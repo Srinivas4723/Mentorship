@@ -41,10 +41,13 @@ public class BaseController {
 	ResponseEntity<String> requestParamNotFound(HttpMessageNotReadableException ex) {
 		return new ResponseEntity<>("Error : Request Body is missing ",HttpStatus.NOT_ACCEPTABLE);
 	}
-	@ExceptionHandler(IllegalArgumentException.class)
-	ResponseEntity<String> requestParamNotFound(IllegalArgumentException ex) {
-		return new ResponseEntity<>("Invalid Search Item ",HttpStatus.NOT_ACCEPTABLE);
+//	@ExceptionHandler(IllegalArgumentException.class)
+//	ResponseEntity<String> requestParamNotFound(IllegalArgumentException ex) {
+//		return new ResponseEntity<>("Invalid Search Item ",HttpStatus.NOT_ACCEPTABLE);
+//	}
+	@ExceptionHandler(IndexOutOfBoundsException.class)
+	ResponseEntity<String> arrayOutofBounds(IndexOutOfBoundsException ex) {
+		return new ResponseEntity<>("Invalid Index ",HttpStatus.NOT_ACCEPTABLE);
 	}
-	
 
 }
