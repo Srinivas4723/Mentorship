@@ -3,9 +3,14 @@ th{
     background-color: #61b1e2;
     color:white;
 }
-td{
+mat-cell{
     vertical-align: middle;
 }
 .padding15{
     padding:15px;
+}
+mat-header-cell{
+    padding:8px;
+    background-color: #61b1e2;
+    color:white;
 }

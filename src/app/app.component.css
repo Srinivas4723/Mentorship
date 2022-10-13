@@ -27,7 +27,10 @@
     padding:7px;
     
   }
-  .toolbar a:hover{
+  .toolbar button{
+    margin:15px;
+  }
+  .toolbar button:hover{
     background-color: green;
     color: white;
   }

@@ -4,7 +4,6 @@ import * as XLSX from "xlsx";
 import { FormControl, Validators } from '@angular/forms';
 import { TokenStorageService } from '../token-storage.service';
 import { Router } from '@angular/router';
-import { iif } from 'rxjs';
 
 const PLAN={
     partnername:"",
@@ -95,6 +94,7 @@ export class CompensationuserComponent implements OnInit {
   nameValidator(field:any){
    return new FormControl(field,Validators.pattern("[A-Za-z0-9]*"));
   }
+  
   isValidPlan(){
     let errorcount=0;
     this.form.partnername=this.form.partnername.trim();
@@ -149,6 +149,12 @@ export class CompensationuserComponent implements OnInit {
       alert("Minium cannot be greater than maximum");
       document.getElementById("minimum")?.classList.add("error");
       document.getElementById("maximum")?.classList.add("error");
+      return false;
+    }
+    if(this.form.fromdate<this.tomorrow || this.form.todate<this.form.fromdate){
+      alert("From Date and To Date are not Valid");
+      document.getElementById("fromdate")?.classList.add("error");
+      document.getElementById("todate")?.classList.add("error");
       return false;
     }
     return true;
@@ -228,15 +234,15 @@ export class CompensationuserComponent implements OnInit {
   ngOnInit(): void { 
     //console.log("j"+this.user);
     let user=this.tokenStorageService.getUser();
-    if(user.id===null){
+    if(user===null){
       this.router.navigate(["/"]);
       alert("OOPS!!!! You are Logged Out...");
     }
-    else if(user.roles[0]==="ROLE_COMPENSATION" ){
+    else if(user.role==="ROLE_COMPENSATION" ){
       this.loadPlans();
     }
     else{
-      this.router.navigate([user.roles[0].replace("ROLE_","").toLowerCase()+"home"]);
+      this.router.navigate([user.role.replace("ROLE_","").toLowerCase()+"home"]);
     }
   }
 }

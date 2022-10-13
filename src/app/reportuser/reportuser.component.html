@@ -1,58 +1,54 @@
-
-<div *ngIf="!hasdata" class="alert alert-danger" >
+<br/>
+<div *ngIf="!hasData" class="alert alert-danger">
     No Records Found
 </div>
+  
+  <div *ngIf="hasData" class="example-container mat-elevation-z8">
+      <div class="d-flex flex-row-reverse p-2 ">
+        <button class=" btn btn-info" (click)="exportexcel()">Export to Excel</button>
+      </div>
 
-<div *ngIf="hasdata" class="table-responsive">
-   
-    <h2>Your Records are Here....</h2>
-    <div class="d-flex flex-row-reverse p-2 "> 
-        <select (change)="onTableSizeChange($event)">
-            <option *ngFor="let size of tablesizes" [ngValue]="size">{{size}}</option>
-          </select>&nbsp;&nbsp;
-        <button class="btn btn-info" (click)="exportexcel()">export to excel</button>
-        
-    </div>
-    
-  <table id="excel-table" class="table table-bordered table-sm">
-  <thead>
-    <tr>
-      <th>S. No</th>
-      <th>Partner Name</th>
-      <th>Compensation Plan</th>
-      <th>Methodology</th>
-      <th>From Date</th>
-      <th>To Date</th>
-      
-    </tr>
-  </thead>
-  <tbody *ngFor="let plan of plans | paginate: { itemsPerPage: tablesize, currentPage:currentpage };, let i = index">
-    <tr>
-      <td [attr.rowspan]="plan.methods.length+1">{{i+1}}</td>
-     <td [attr.rowspan]="plan.methods.length+1">
-       {{plan.partnername}}
-     </td>
-     <td [attr.rowspan]="plan.methods.length+1">
-      {{plan.compensationplan}}
-    </td>
-    <td [attr.rowspan]="plan.methods.length+1">
-      {{plan.compensationmethodology}}
-    </td>
-    <td [attr.rowspan]="plan.methods.length+1">
-      {{plan.fromdate}}
-    </td>
-    <td [attr.rowspan]="plan.methods.length+1">
-      {{plan.todate}}
-    </td>
-   
-    </tr>
-    
-    
-</tbody>
-</table>
-<div class="padding15 d-flex align-items-center justify-content-center">
-    <pagination-controls  (pageChange)="pagechange($event)"></pagination-controls> 
-</div>
+    <mat-table [dataSource]="dataSource"  matSort>
+  
+        <ng-container matColumnDef="sno">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Sno </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.sno}} </mat-cell>
+        </ng-container>
 
-</div>
+        <ng-container matColumnDef="partnername">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Partner Name </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.partnername}} </mat-cell>
+        </ng-container>
+  
+     
+      <ng-container matColumnDef="compensationplan">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Plan </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.compensationplan}} </mat-cell>
+      </ng-container>
+  
+     
+      <ng-container matColumnDef="compensationmethodology">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Method </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.compensationmethodology}} </mat-cell>
+      </ng-container>
+  
+     
+      <ng-container matColumnDef="fromdate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> From Date </mat-header-cell>
+        <mat-cell *matCellDef="let row" > {{row.fromdate}} </mat-cell>
+      </ng-container>
 
+      <ng-container matColumnDef="todate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> To Date </mat-header-cell>
+        <mat-cell *matCellDef="let row" > {{row.todate}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator  [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+  </div>
+  
+  

@@ -1,0 +1,88 @@
+<br/>
+<div *ngIf="!hasData" class="alert alert-danger">
+    No Records Found
+</div>
+  
+  <div *ngIf="hasData" class="example-container mat-elevation-z8">
+     
+
+    <mat-table [dataSource]="dataSource"  matSort>
+  
+        <ng-container matColumnDef="empid">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Emp Id </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.empid}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="firstname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+            <mat-cell *matCellDef="let row"> 
+                <input type="text" class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.firstname" >
+                <span *ngIf="!iseditable(row.empid)">{{row.firstname}}</span> 
+            </mat-cell>
+        </ng-container>
+  
+     
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <input type="text" class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.lastname" [value]="row.lastname">
+            <span *ngIf="!iseditable(row.empid)">{{row.lastname}} </span> 
+        </mat-cell>
+      </ng-container>
+  
+     
+      <ng-container matColumnDef="location">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Location </mat-header-cell>
+        <mat-cell *matCellDef="let row"> 
+            <select class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.location">
+                <option *ngFor="let loc of locations" [value]="loc" [selected]="row.location">{{loc}}</option>
+            </select>
+            <span *ngIf="!iseditable(row.empid)"> {{row.location}} </span> 
+         </mat-cell>
+      </ng-container>
+  
+     
+      <ng-container matColumnDef="department">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Department </mat-header-cell>
+        <mat-cell *matCellDef="let row" > 
+            <select class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.department">
+                <option *ngFor="let dep of departments" [value]="dep" >{{dep}}</option>
+            </select>
+            <span *ngIf="!iseditable(row.empid)">{{row.department}} </span>
+        </mat-cell>
+        <input type="text" class="" *ngIf="false">
+      </ng-container>
+
+      <ng-container matColumnDef="jobtitle">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Job Title </mat-header-cell>
+        <mat-cell *matCellDef="let row" >
+            <select class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.jobtitle">
+                <option *ngFor="let job of jobtitles" [value]="job" >{{job}}</option>
+            </select>
+            <span *ngIf="!iseditable(row.empid)"> {{row.jobtitle}} </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Action" >
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
+        <mat-cell *matCellDef="let row" > 
+            <img src="/assets/edit-icon.png" *ngIf="!iseditable(row.empid)" width="25" height="25" (click)="editUser(row)" title="Edit User" alt="edit icon">
+            <img src="/assets/save-icon.png" *ngIf="iseditable(row.empid)" width="30" height="30" (click)="saveUser(row)" title="save User" alt="save icon">
+            <img src="/assets/cancel-icon.png" *ngIf="iseditable(row.empid)" width="30" height="30" (click)="cancel()" title="Cancel User" alt="Cacnel icon">
+         </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator  [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+  </div>
+  
+  

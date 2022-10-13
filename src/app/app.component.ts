@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { TokenStorageService } from './token-storage.service';
 
@@ -8,13 +8,24 @@ import { TokenStorageService } from './token-storage.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'compensationsystem';
-  username="Srinvas Yadala";
-  isLoggedIn:Boolean=true;
-  constructor(public userService: UserService,public tokenStorageService:TokenStorageService){}
+  isLoggedIn:Boolean=false;
+  
+  constructor(public userService: UserService,public tokenStorageService:TokenStorageService){
+    let user=this.tokenStorageService.getUser();
+    if(user!==null){
+      this.isLoggedIn=true;
+    }
+  }
   logout(){
     this.tokenStorageService.signOut();
     window.location.reload();
+  }
+  ngOnInit(){
+    let user=this.tokenStorageService.getUser();
+    if(user!==null){
+      this.isLoggedIn=true;
+    }
   }
 }

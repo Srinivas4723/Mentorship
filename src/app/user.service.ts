@@ -5,6 +5,12 @@ const API_URL = 'http://localhost:8081/';
   providedIn: 'root'
 })
 export class UserService {
+  saveUserData(form: { empid: number; firstname: string; lastname: string; location: string; jobtitle: string; department: string; role: string; }) {
+    return this.http.put(API_URL+"user/updateuser",form);
+  }
+  findUserData() {
+    return this.http.get(API_URL+"user/userdata");
+  }
   
   getMyPlans(userid:any) {
     return this.http.get(API_URL+"plans/myplans/userid/"+userid);

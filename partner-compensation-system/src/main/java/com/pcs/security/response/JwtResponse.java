@@ -1,65 +1,40 @@
 package com.pcs.security.response;
 
 import java.util.List;
+import java.util.Optional;
 
+import javax.validation.constraints.NotNull;
 
+import com.pcs.enums.Department;
+import com.pcs.enums.JobTitle;
+import com.pcs.enums.Location;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class JwtResponse {
-	private String token;
+	private String accesstoken;
 	private String type = "Bearer";
 	private Long id;
 	private String username;
-	private String email;
-	private List<String> roles;
+	private String firstname;
+	private String lastname;
+	private Location location;
+	private JobTitle jobtitle;
+	private Department department;
+	private String role;
 
-	public JwtResponse(String accessToken, Long id, String username, List<String> roles) {
-		this.token = accessToken;
-		this.id = id;
-		this.username = username;
-		//this.email = email;
-		this.roles = roles;
+	public JwtResponse(String accessToken, Long id, String username, String firstname, String lastname,Location location, JobTitle jobtitle,
+			Department department, String role) {
+		this.accesstoken=accessToken;
+		this.id=id;
+		this.firstname=firstname;
+		this.username=username;this.location=location;
+		this.lastname=lastname;this.jobtitle=jobtitle;
+		this.department=department;this.role=role;
+		
 	}
-
-	public String getAccessToken() {
-		return token;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.token = accessToken;
-	}
-
-	public String getTokenType() {
-		return type;
-	}
-
-	public void setTokenType(String tokenType) {
-		this.type = tokenType;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public List<String> getRoles() {
-		return roles;
-	}
+	
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../user.service';
 
 @Component({
@@ -21,12 +23,12 @@ export class RegisterComponent implements OnInit {
   locations=["HYDERABAD","CHENNAI","BANGLORE","PUNE","MUMBAI","TRIVENDRUM"];
   jobtitles=["TRAINEE","ANALYST","ASSOCIATE","ENGINEER","MANAGER"];
   departments=["FINANCE","INSURANCE","HEALTHCARE","HUMANRESOURCE","SALES","MARKETING"];
-  roles=["COMPENSATION","REPORT","ADMIN",]
+  roles=["COMPENSATION","REPORT","ADMIN"]
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(public userService:UserService) { }
+  constructor(public router:Router,public userService:UserService) { }
 
   ngOnInit(): void {
   }
@@ -41,9 +43,11 @@ export class RegisterComponent implements OnInit {
       console.log("error"+JSON.stringify(error));
       if(error.status===200){
         alert("Regisration Success");
+        this.isSuccessful=true;
+        this.router.navigate(['/']);
       }
       else {
-        alert(error.error.text);
+        alert(error.error);
       }
     });
     

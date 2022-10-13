@@ -34,4 +34,20 @@ export class TokenStorageService {
 
     return null;
   }
+  public getReport(): any {
+    const report = window.sessionStorage.getItem("report");
+    if (report) {
+      return JSON.parse(report);
+    }
+
+    return null;
+  }
+  public getUserData(): any {
+    const userdata = window.sessionStorage.getItem("userdata");
+    if (userdata) {
+      return JSON.parse(userdata);
+    }
+
+    return null;
+  }
 }
