@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TokenStorageService } from '../token-storage.service';
+import { UserService } from '../user.service';
 
 import { ReportuserComponent } from './reportuser.component';
 
@@ -8,7 +11,9 @@ describe('ReportuserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportuserComponent ]
+      imports:[HttpClient],
+      providers:[UserService,TokenStorageService],
+      declarations: [ ReportuserComponent , HttpClient]
     })
     .compileComponents();
   });

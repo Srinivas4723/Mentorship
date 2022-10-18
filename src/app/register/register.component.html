@@ -8,7 +8,7 @@
         class="row"
         (ngSubmit)="f.form.valid && onSubmit()"
         #f="ngForm"
-        novalidate
+        
       >
         <div class="col-sm-6">
           <label for="firstname">First Name</label>
@@ -98,7 +98,7 @@
             <label for="jobtitle">Job Title</label>
             <select
               class="form-control"
-              name="email"
+              name="jobtitle"
               [(ngModel)]="form.jobtitle"
               required
               #jobtitle="ngModel"
@@ -116,7 +116,7 @@
             <label for="deparment">Department</label>
             <select
               class="form-control"
-              name="email"
+              name="department"
               [(ngModel)]="form.department"
               required
               #deparment="ngModel"
@@ -134,7 +134,7 @@
             <label for="role">Role</label>
             <select
               class="form-control"
-              name="email"
+              name="role"
               [(ngModel)]="form.role"
               required
               #role="ngModel"
@@ -179,4 +179,4 @@
       
     </div>
   </div>
-  
+ 

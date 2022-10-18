@@ -1,17 +1,13 @@
 package com.pcs.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,12 +31,15 @@ import com.pcs.response.AdminResponse;
 import com.pcs.security.jwt.JwtUtils;
 import com.pcs.security.response.JwtResponse;
 import com.pcs.security.services.UserDetailsImpl;
+import com.pcs.service.PcsService;
+
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user/")
 public class AuthController extends BaseController {
 	@Autowired UserRepository userRepository;
+	@Autowired PcsService service;
 	@Autowired
 	AuthenticationManager authenticationManager;
 
@@ -51,21 +49,27 @@ public class AuthController extends BaseController {
 	@Autowired
 	JwtUtils jwtUtils;
 	
+	/**
+	 * Register User (compensation/admin/report)
+	 * @param user
+	 * @return
+	 */
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody User user){
-		//ExampleMatcher rolematcher=ExampleMatcher.matchingAll().withIgnorePaths("role","password");
-		//Optional<User> existingUser=userRepository.findONe(Example.of(user,rolematcher));
-		Optional<User> existingUser=userRepository.findByUsername(user.getUsername());
+		Optional<User> existingUser=service.findByUsername(user.getUsername());
 		if(existingUser.isEmpty()) {
 			user.setPassword(encoder.encode(user.getPassword()));
-			//user.setId("CU"+user.getFirstname().charAt(0)+user.getLastname().charAt(0)+ Math.abs(random.nextInt()));
 			userRepository.save(user);
-			
 			return ResponseEntity.ok("Registration Success");
 		}
 		return ResponseEntity.badRequest().body("User Already Exists");
 	}
 	
+	/**
+	 * Login Request
+	 * @param loginRequest
+	 * @return
+	 */
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -78,7 +82,6 @@ public class AuthController extends BaseController {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
 		Optional<String> role = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority()).findAny();
-//				.collect(Collectors.toList());
 		Optional<User> user= userRepository.findByUsername(loginRequest.getUsername());
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getId(), 
@@ -90,6 +93,12 @@ public class AuthController extends BaseController {
 												 user.get().getDepartment(),
 												 role.get()));
 	}
+	/**
+	 * creating response of admin user
+	 * @param user
+	 * @param adminResponse
+	 * @return
+	 */
 	private AdminResponse createResponse(User user,AdminResponse adminResponse) {
 		adminResponse.setEmpid(user.getId());
 		adminResponse.setFirstname(user.getFirstname());
@@ -100,18 +109,25 @@ public class AuthController extends BaseController {
 		adminResponse.setRole(user.getRole());
 		return adminResponse;
 	}
+	/**
+	 * Getting User Data of compensation, report roles
+	 * @return
+	 */
 	@GetMapping("/userdata")
 	@PreAuthorize("hasRole('ADMIN')")
 	public List<AdminResponse> getUserData(){
 		List<AdminResponse> adminResponseList=new ArrayList<>();
-		List<User> compUsers=userRepository.findAllByRole(Role.COMPENSATION);
-		List<User> reportUsers=userRepository.findAllByRole(Role.REPORT);
-		compUsers.forEach(user->adminResponseList.add(createResponse(user,new AdminResponse())));
-		reportUsers.forEach(user->adminResponseList.add(createResponse(user,new AdminResponse())));
+		List<User> users=userRepository.findAllByRoleOrRole(Role.COMPENSATION,Role.REPORT);
+		users.forEach(user->adminResponseList.add(createResponse(user,new AdminResponse())));
 		return adminResponseList;
 		
 	}
 	
+	/**
+	 * Updating user profile
+	 * @param adminResponse
+	 * @return
+	 */
 	@PutMapping("/updateuser")
 	@PreAuthorize("hasRole('ADMIN')")
 	public List<AdminResponse> updateUser(@RequestBody AdminResponse adminResponse){
@@ -125,7 +141,7 @@ public class AuthController extends BaseController {
 			userRepository.save(existingUser.get());
 			return getUserData();
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 

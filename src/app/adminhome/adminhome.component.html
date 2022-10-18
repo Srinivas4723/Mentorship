@@ -1,9 +1,21 @@
 <br/>
-<div *ngIf="!hasData" class="alert alert-danger">
-    No Records Found
+<div class="alert alert-danger" *ngIf="user===null || user.role!=='ROLE_ADMIN'">Error Unauthorised</div>
+<div *ngIf="isFormEnabled" class="fielderror">
+    <ul>
+        <span *ngFor="let f of form | keyvalue">
+        <li *ngIf="nameValidator(f.value).errors as err">
+            {{f.key}} <span *ngIf="err.required">is required</span>
+            <span *ngIf="err.minlength">size cannot be less than 3</span>
+        </li>
+        </span>
+    </ul>
 </div>
+<div *ngIf="dataSource.filteredData.length==0" class="alert alert-danger">
+    No Users Found
+</div>
+
   
-  <div *ngIf="hasData" class="example-container mat-elevation-z8">
+  <div *ngIf="dataSource.filteredData.length && user.role==='ROLE_ADMIN'" class="example-container mat-elevation-z8">
      
 
     <mat-table [dataSource]="dataSource"  matSort>
@@ -16,7 +28,7 @@
         <ng-container matColumnDef="firstname">
             <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
             <mat-cell *matCellDef="let row"> 
-                <input type="text" class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.firstname" >
+                <input type="text" [ngClass]="{'error':nameValidator(form.firstname).errors,'input':true}" *ngIf="iseditable(row.empid)" [(ngModel)]="form.firstname" >
                 <span *ngIf="!iseditable(row.empid)">{{row.firstname}}</span> 
             </mat-cell>
         </ng-container>
@@ -25,7 +37,7 @@
       <ng-container matColumnDef="lastname">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
         <mat-cell *matCellDef="let row">
-            <input type="text" class="input" *ngIf="iseditable(row.empid)" [(ngModel)]="form.lastname" [value]="row.lastname">
+            <input type="text" [ngClass]="{'error':nameValidator(form.lastname).errors,'input':true}" *ngIf="iseditable(row.empid)" [(ngModel)]="form.lastname" [value]="row.lastname">
             <span *ngIf="!iseditable(row.empid)">{{row.lastname}} </span> 
         </mat-cell>
       </ng-container>

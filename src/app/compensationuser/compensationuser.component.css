@@ -1,17 +1,27 @@
 .error{
     border: 1px solid red;
     background-color:  rgb(255,206,206);
+    
+}
+li{
+    padding:3px;
+}
+.fielderror{
+    
+    color:rgb(206, 36, 36);
+    background-color:  rgb(255,206,206);
 }
 th{
-    padding:8px;
+    
     background-color: #61b1e2;
-    color:white;
 }
 td{
     vertical-align: middle;
     justify-content: center;
     align-content: center;
+    padding:5px;
 }
 .red{
     color:red;
 }
+

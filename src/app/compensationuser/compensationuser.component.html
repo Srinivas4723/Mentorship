@@ -1,89 +1,181 @@
 <div >
-   
-    <h2>Your Plans are here.....</h2>
+    <div class="alert alert-danger" *ngIf="user===null || user.role!=='ROLE_COMPENSATION'">Error Unauthorised</div>
+    <div  class="fielderror">
+       
+    <div *ngIf="isMethodFormSubmitted" >
+        <ul >
+            <div *ngFor="let mf of methodform | keyvalue" >
+               <span *ngIf="minimum(mf.value).errors as err" >
+                <li *ngFor="let m of err | keyvalue" >
+                    {{mf.key}} field 
+                    <span *ngIf="err.required">is required</span>
+                    <span *ngIf="err.min">cannot be less than 1</span>
+                </li>
+                </span>
+            </div>
+            <li  *ngIf="minmax(methodform.minimum,methodform.maximum).errors">minimum filed cannot be greater than maximum field</li>
+        </ul>
+    </div>
+    <div *ngIf="isPlanFormSubmitted && user.role==='ROLE_COMPENSATION'" >
+        <ul  >
+                <li *ngIf="form.fromdate!=='' && (form.fromdate <= todayiso || form.todate <= form.fromdate)">Invalid from / to Date</li>
+            
+            <div *ngFor="let mf of form | keyvalue" >
+               <span *ngIf="mf.key!=='methods' && requiredValidator(mf.value).errors as err" >
+                <li *ngFor="let m of err | keyvalue" >
+                    {{mf.key}} field 
+                    <span *ngIf="err.required">is required</span>
+                    <!-- <span *ngIf="err.minlength">size cannot be less than 3</span> -->
+                </li>
+                </span>
+            </div>
+            <div *ngFor="let ml of form.methods,let i=index">
+            <div *ngFor="let mf of ml | keyvalue" >
+                <span *ngIf="minimum(mf.value).errors as err" >
+                 <li *ngFor="let m of err | keyvalue" >
+                     {{mf.key}} field 
+                     <span *ngIf="err.required">is required</span>
+                     <span *ngIf="err.min">cannot be less than 1</span>
+                 </li>
+                 </span>
+             </div>
+             <li  *ngIf="minmax(form.methods[i].minimum,form.methods[i].maximum).errors">minimum filed cannot be greater than maximum field</li>
+            </div>
+            <span *ngIf="stringValidator(form.partnername).errors as err">
+            <li *ngFor="let m of err | keyvalue">
+                partnername <span *ngIf="err.minlength">size cannot be less than 3</span>
+                <span *ngIf="err.pattern">cannot accecpt special characters</span>
+            </li>
+            </span>
+        </ul>
+    </div>
+</div>
+
+<div *ngIf="user!==null && user.role==='ROLE_COMPENSATION'">
     <div class="d-flex flex-row-reverse p-2 ">
         <select (change)="onTableSizeChange($event)">
             <option *ngFor="let size of tablesizes" [ngValue]="size">{{size}}</option>
         </select>
     </div>    
     
-    <table id="excel-table" class="table table-bordered">
+    <table id="excel-table" class="table table-bordered table-responsive">
       <thead>
         <tr>
           <th>S. No</th>
           <th >Partner Name</th>
           <th>Compensation Plan</th>
-          <th>Methodology</th>
+          <th>Compensation Methodology</th>
           <th>From Date</th>
           <th>To Date</th>
           <th>Minimum</th>
           <th>Maximum</th>
           <th>Percentage</th>
-          <th>Action</th>
+          <th>Method Action</th>
+          <th>Plan Action</th>
         </tr>
       </thead>
       <tbody >
         <ng-container *ngFor="let plan of plans | paginate: { itemsPerPage: tablesize, currentPage:currentpage };, let i = index">
         <tr >
-          <td [attr.rowspan]="plan.methods.length+1">{{i+1}}</td>
-         <td  [attr.rowspan]="plan.methods.length+1">
+          <td [attr.rowspan]="getRowSpan(plan.methods.length,i)">{{i+1}}</td>
+         <td  [attr.rowspan]="getRowSpan(plan.methods.length,i)">
            {{plan.partnername}}
          </td>
-         <td  [attr.rowspan]="plan.methods.length+1">
+         <td  [attr.rowspan]="getRowSpan(plan.methods.length,i)">
           {{plan.compensationplan}}
         </td>
-        <td [attr.rowspan]="plan.methods.length+1">
+        <td [attr.rowspan]="getRowSpan(plan.methods.length,i)">
           {{plan.compensationmethodology}}
         </td>
-        <td [attr.rowspan]="plan.methods.length+1">
+        <td [attr.rowspan]="getRowSpan(plan.methods.length,i)">
           {{plan.fromdate}}
         </td>
-        <td [attr.rowspan]="plan.methods.length+1">
+        <td [attr.rowspan]="getRowSpan(plan.methods.length,i)">
           {{plan.todate}}
         </td>
         <td>{{plan.methods[0].minimum}}</td>
         <td>{{plan.methods[0].maximum}}</td>
         <td>{{plan.methods[0].percentage}}</td>
         <td >
+            <img width="20" height="20" (click)="addMethodRow(i)" src="/assets/add-icon.png" alt="add-icon" title="Add Method">&nbsp;
+           <img width="20" height="20" (click)="deleteMethodRow(plan.planid,0)" src="/assets/minus.png" alt="delete-icon" title="Delete Method"> 
+        </td>
+        <td [attr.rowspan]="getRowSpan(plan.methods.length,i)">
           <!-- <img  (click)="addCancelplan()" width="20" height="20" src="/assets/add-icon.png"  alt="add-icon" title="Add New plan"/>&nbsp; -->
-          <img width="25" height="25" (click)="deleteplan(plan.planid,0)" src="/assets/delete-icon.png"  alt="delete-icon" title="Delete plan"/>
+          <img width="25" height="25" (click)="deleteplan(plan.planid)" src="/assets/delete-icon.png"  alt="delete-icon" title="Delete plan"/>
         </td>
         </tr>
-        <tr *ngFor="let method of plan.methods; let j = index">
-          <td *ngIf="j!=0">{{method.minimum}}</td>
-          <td *ngIf="j!=0">{{method.maximum}}</td>
-          <td *ngIf="j!=0">{{method.percentage}}</td>
-          <td *ngIf="j!=0">
-            <!-- <img  (click)="addCancelplan()" width="20" height="20" src="/assets/add-icon.png"  alt="add-icon" title="Add New plan"/>&nbsp; -->
-           <img  (click)="deleteplan(plan.planid,j)" width="25" height="20" src="/assets/delete-icon.png"  alt="delete-icon" title="Delete plan"/>
-          </td>
+        <tr *ngFor="let method of plan.methods.slice(1); let j = index">
+          <td >{{method.minimum}}</td>
+          <td>{{method.maximum}}</td>
+          <td >{{method.percentage}}</td>
+          <td >
+            <img width="20" height="20" (click)="addMethodRow(i)" src="/assets/add-icon.png" alt="add-icon" title="Add Method">&nbsp;
+           <img width="20" height="20" (click)="deleteMethodRow(plan.planid,j+1)" src="/assets/minus.png" alt="delete-icon" title="Delete Method"> 
+        </td>
+         
+        </tr>
+        <tr *ngIf="hasaddingNewMethod===i">
+           
+            <td><input [ngClass]="{'error':isMethodFormSubmitted && (minimum(methodform.minimum).errors || minmax(methodform.minimum,methodform.maximum).errors),'form-control':true}" [(ngModel)]="methodform.minimum" name="minimum" id="minimum"  [min]="1" type="number"></td>
+            <td><input  [ngClass]="{'error':isMethodFormSubmitted && minimum(methodform.maximum).errors,'form-control':true}" [(ngModel)]="methodform.maximum" name="maximum"id="maximum" [min]="1" type="number"></td>
+            <td><input  [ngClass]="{'error':isMethodFormSubmitted && minimum(methodform.percentage).errors,'form-control':true}" [(ngModel)]="methodform.percentage" name="percentage" id="percentage" [min]="1" type="number"></td>
+       
+            <td >
+            <img width="24" height="30" (click)="saveMethod(plan.planid)" src="/assets/save-icon.png" alt="save-icon" title="Save Method">
+               <img width="25" height="40" (click)="removeMethodRow()" src="/assets/cancel-icon.png" alt="cancel-icon" title="Cancel"> 
+            </td>
+        
         </tr>
       </ng-container>
       <tr >
-        <td></td>
-        <td width="130px">
-            <input [(ngModel)]="form.partnername" class="form-control"   type="text" id="partnername">
+        <td [attr.rowspan]="form.methods.length"></td>
+        <td [attr.rowspan]="form.methods.length" width="120px" >
+            <input [ngClass]="{'error':isPlanFormSubmitted && nameValidator(form.partnername).errors,'form-control':true}" [(ngModel)]="form.partnername"    type="text" id="partnername">
             
         </td>
-        <td><input [(ngModel)]="form.compensationplan" class="form-control" type="text" id="compensationplan"></td>
-        <td>
-          <select [(ngModel)]="form.compensationmethodology" class="form-control" id="compensationmethodology">
+        <td [attr.rowspan]="form.methods.length"><input [(ngModel)]="form.compensationplan" [ngClass]="{'error':isPlanFormSubmitted && nameValidator(form.compensationplan).errors,'form-control':true}" type="text" id="compensationplan"></td>
+        <td [attr.rowspan]="form.methods.length" >
+          <select [(ngModel)]="form.compensationmethodology" [ngClass]="{'error':isPlanFormSubmitted && requiredValidator(form.compensationmethodology).errors,'form-control':true}" id="compensationmethodology">
             <option value="">--select--</option>
             <option Value="VOLUME">VOLUME</option>
             <option Value="REVENUE">REVENUE</option>
           </select>
         </td>
-        <td ><input class="form-control" id="fromdate"  [(ngModel)]="form.fromdate" [min]="today | date:'yyyy-MM-dd'" type="date"></td>
-        <td ><input class="form-control" id="todate" [(ngModel)]="form.todate" [min]="getMinToDate() | date:'yyyy-MM-dd'" type="date"></td>
-        <td><input [(ngModel)]="form.minimum" id="minimum" class="form-control" [min]="1" type="number"></td>
-        <td><input  [(ngModel)]="form.maximum" id="maximum" class="form-control" [min]="1" type="number"></td>
-        <td><input  [(ngModel)]="form.percentage" id="percentage" class="form-control" [min]="1" type="number"></td>
+        <td [attr.rowspan]="form.methods.length">
+            <input  [ngClass]="{'error':isPlanFormSubmitted && (requiredValidator(form.fromdate).errors || form.fromdate <= todayiso ),'form-control':true}"  id="fromdate"  [(ngModel)]="form.fromdate" [min]="today | date:'yyyy-MM-dd'" type="date">
+        </td>
+        <td [attr.rowspan]="form.methods.length">
+            <input [ngClass]="{'error':isPlanFormSubmitted && (requiredValidator(form.todate).errors || form.todate <= form.fromdate),'form-control':true}" id="todate" [(ngModel)]="form.todate" [min]="getMinToDate() | date:'yyyy-MM-dd'" type="date">
+        </td>
+        
+        <td><input [ngClass]="{'error':isPlanFormSubmitted && (minimum(form.methods[0].minimum).errors || minmax(form.methods[0].minimum,form.methods[0].maximum).errors),'form-control':true}" [(ngModel)]="form.methods[0].minimum" id="minimum0"  [min]="1" type="number"></td>
+        <td><input  [ngClass]="{'error':isPlanFormSubmitted && minimum(form.methods[0].maximum).errors,'form-control':true}"[(ngModel)]="form.methods[0].maximum" id="maximum0" class="form-control" [min]="1" type="number"></td>
+        <td><input [ngClass]="{'error':isPlanFormSubmitted && minimum(form.methods[0].percentage).errors,'form-control':true}" [(ngModel)]="form.methods[0].percentage" id="percentage" class="form-control" [min]="1" type="number"></td>
+        
         <td >
+            <img width="20" height="20" (click)="addFormMethodRow()" src="/assets/add-icon.png" alt="save-icon" title="Save Plan">&nbsp;
+           <img width="20" height="20" (click)="removeRow(0)" src="/assets/minus.png" alt="cancel-icon" title="Cancel Plan"> 
+        </td>
+        <td [attr.rowspan]="form.methods.length">
             <img width="30" height="35" (click)="savePlan()" src="/assets/save-icon.png" alt="save-icon" title="Save Plan">
           <!-- <img width="25" height="35" (click)="addCancelplan()" src="/assets/cancel-icon.png" alt="cancel-icon" title="Cancel Plan"> -->
         </td>
+      </tr>
+      <tr *ngFor="let method of form.methods.slice(1), let m = index">
+       
+        <td ><input  [ngClass]="{'error':isPlanFormSubmitted && (minimum(method.minimum).errors || minmax(method.minimum,method.maximum).errors),'form-control':true}"[(ngModel)]="method.minimum"  id="minimum{{m+1}}" class="form-control" [min]="1" type="number"></td>
+        <td ><input  [ngClass]="{'error':isPlanFormSubmitted && minimum(method.maximum).errors,'form-control':true}" [(ngModel)]="method.maximum" id="maximum{{m+1}}" class="form-control" [min]="1" type="number"></td>
+        <td ><input  [ngClass]="{'error':isPlanFormSubmitted && minimum(method.percentage).errors,'form-control':true}" [(ngModel)]="method.percentage" id="percentage" class="form-control" [min]="1" type="number"></td>
+        <td >
+            <img width="20" height="20" (click)="addFormMethodRow()" src="/assets/add-icon.png" alt="save-icon" title="Save Plan">&nbsp;
+           <img width="20" height="20" (click)="removeRow(m+1)" src="/assets/minus.png" alt="cancel-icon" title="Cancel Plan"> 
+        </td>
+       
+       
       </tr>
     </tbody>
     </table>
     <pagination-controls (pageChange)="pagechange($event)"></pagination-controls> 
     </div>
+</div>

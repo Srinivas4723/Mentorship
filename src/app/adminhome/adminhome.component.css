@@ -5,3 +5,13 @@
     border-bottom: 1px solid black;
     max-width: 70%;
   }
+  .error{
+   
+    background-color:  rgb(255,206,206);
+    
+}
+.fielderror{
+    
+    color:rgb(206, 36, 36);
+    background-color:  rgb(255,206,206);
+}

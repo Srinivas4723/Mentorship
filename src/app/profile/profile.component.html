@@ -1,5 +1,6 @@
-
-<div class="container ">
+<div class="alert alert-danger" *ngIf="userprofile===null">Error Unauthorised</div>
+<div class="container" *ngIf="userprofile!==null">
+    
     <h2>Your Profile</h2>
     <div class=" card py-4 mystyle justify-content-center">
    <h3> Employee Id: {{userprofile.id}}</h3>

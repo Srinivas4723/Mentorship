@@ -34,7 +34,11 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-
+    this.form.firstname=this.form.firstname.trim();
+    this.form.lastname=this.form.lastname.trim();
+    this.form.username=this.form.username.trim();
+    this.form.password=this.form.password.trim();
+    if(this.form.firstname!=="" || this.form.lastname!=="" || this.form.username!=="" || this.form.password!==""){
     const observable = this.userService.registerUser(this.form);
     observable.subscribe((res)=>{
       console.log("res"+JSON.stringify(res));
@@ -50,7 +54,7 @@ export class RegisterComponent implements OnInit {
         alert(error.error);
       }
     });
-    
+  }
     
   }
 

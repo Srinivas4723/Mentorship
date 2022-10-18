@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 import { CompensationuserComponent } from './compensationuser.component';
 
@@ -22,4 +23,8 @@ describe('CompensationuserComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('isFormValid',()=>{
+    expect(false);
+  })
 });

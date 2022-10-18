@@ -13,13 +13,13 @@ export class ProfileComponent implements OnInit {
   constructor(public tokenStorageService:TokenStorageService,public router:Router) { }
 
   ngOnInit(): void {
-    let user=this.tokenStorageService.getUser();
-    if(user===null){
-      this.router.navigate(["/"]);
-      alert("OOPS!!!! You are Logged Out...");
+    this.userprofile=this.tokenStorageService.getUser();
+    if(this.userprofile===null){
+      // this.router.navigate(["/"]);
+      // alert("OOPS!!!! You are Logged Out...");
     }
     else{
-      this.userprofile=user;
+     
       this.role=this.userprofile.role.replace("ROLE_","");
     }
   }

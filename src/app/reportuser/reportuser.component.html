@@ -1,9 +1,11 @@
 <br/>
-<div *ngIf="!hasData" class="alert alert-danger">
+<div class="alert alert-danger" *ngIf="user===null || user.role!=='ROLE_REPORT'">Error Unauthorised</div>
+
+<div *ngIf="!dataSource.filteredData.length" class="alert alert-danger">
     No Records Found
 </div>
-  
-  <div *ngIf="hasData" class="example-container mat-elevation-z8">
+
+  <div *ngIf="dataSource.filteredData.length && user.role==='ROLE_REPORT'" class="example-container mat-elevation-z8">
       <div class="d-flex flex-row-reverse p-2 ">
         <button class=" btn btn-info" (click)="exportexcel()">Export to Excel</button>
       </div>

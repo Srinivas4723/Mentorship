@@ -18,6 +18,7 @@ export class ReportuserComponent implements OnInit {
   dataSource: MatTableDataSource<Object>;
   
   hasData:boolean=true;
+  user:any;
   @ViewChild(MatPaginator)
   paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);;
   @ViewChild(MatSort)
@@ -37,12 +38,12 @@ export class ReportuserComponent implements OnInit {
      
       }
    ngOnInit(): void {
-    let user=this.tokenStorageService.getUser();
-    if(user===null){
-      this.router.navigate(["/"]);
-      alert("OOPS!!!! You are Logged Out...");
+    this.user=this.tokenStorageService.getUser();
+    if(this.user===null){
+      // this.router.navigate(["/"]);
+      // alert("OOPS!!!! You are Logged Out...");
     }
-    else if(user.role==="ROLE_REPORT" ){
+    else if(this.user.role==="ROLE_REPORT" ){
       const observable= this.userService.findAll();
       observable.subscribe((res)=>{
         //window.sessionStorage.setItem("report",JSON.stringify(res));
@@ -52,12 +53,13 @@ export class ReportuserComponent implements OnInit {
             alert("You are Signout...");
             this.tokenStorageService.signOut();
             this.router.navigate(["/"]);
+            window.location.reload();
           }
         });
       }
-      else{
-        this.router.navigate([user.role.replace("ROLE_","").toLowerCase()+"home"]);
-      }
+      // else{
+      //   this.router.navigate([this.user.role.replace("ROLE_","").toLowerCase()+"home"]);
+      // }
     }
     ngAfterViewInit() {
       this.dataSource.paginator = this.paginator;

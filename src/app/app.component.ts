@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { TokenStorageService } from './token-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit{
   title = 'compensationsystem';
   isLoggedIn:Boolean=false;
   
-  constructor(public userService: UserService,public tokenStorageService:TokenStorageService){
+  constructor(public router:Router,public userService: UserService,public tokenStorageService:TokenStorageService){
     let user=this.tokenStorageService.getUser();
     if(user!==null){
       this.isLoggedIn=true;
@@ -20,12 +21,17 @@ export class AppComponent implements OnInit{
   }
   logout(){
     this.tokenStorageService.signOut();
-    window.location.reload();
+    this.router.navigate(["/"]);
+    this.isLoggedIn=false;
+    //window.location.reload();
   }
   ngOnInit(){
     let user=this.tokenStorageService.getUser();
     if(user!==null){
       this.isLoggedIn=true;
+    }
+    else{
+      this.router.navigate(["/"]);
     }
   }
 }

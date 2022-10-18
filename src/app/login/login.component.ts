@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppComponent } from '../app.component';
 import { TokenStorageService } from '../token-storage.service';
 import { UserService } from '../user.service';
 
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   user: any;
   role:any;
 
-  constructor(public router:Router,private userService: UserService, private tokenStorage: TokenStorageService) { }
+  constructor(public app:AppComponent,public router:Router,private userService: UserService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     this.user=this.tokenStorage.getUser();
@@ -36,10 +37,8 @@ export class LoginComponent implements OnInit {
     
     this.form.username=this.form.username.trim();
     this.form.password=this.form.password.trim();
-    if(this.form.username==="" || this.form.password===""){
-      alert("UserName / Password Cannot be Blank");
-    }
-    else{
+    if(this.form.username!=="" || this.form.password!==""){
+     
     this.userService.login(this.form).subscribe(
       (data:any) => {
         console.log(JSON.stringify(data));
@@ -48,6 +47,7 @@ export class LoginComponent implements OnInit {
 
         // this.isLoginFailed = false;
         this.isLoggedIn = true;
+        this.app.isLoggedIn=true;
         this.role = this.tokenStorage.getUser().role;
         const role=this.role.replace("ROLE_","").toLowerCase();
         console.log(this.role+"home");
@@ -55,13 +55,15 @@ export class LoginComponent implements OnInit {
             const observable= this.userService.findAll();
             observable.subscribe((res)=>{
               window.sessionStorage.setItem("report",JSON.stringify(res));
-              window.location.reload();
+              this.router.navigate(['/login']);
+              //window.location.reload();
             },
             (error)=>{
               if(error.status===401 || error.status===401){
                 alert("You are Signout...");
                   this.tokenStorage.signOut();
                   this.router.navigate(["/"]);
+                  window.location.reload();
               }
             });
         }
@@ -69,19 +71,22 @@ export class LoginComponent implements OnInit {
           const observable= this.userService.findUserData();
             observable.subscribe((res)=>{
               window.sessionStorage.setItem("userdata",JSON.stringify(res));
-              window.location.reload();
+             this.router.navigate(['/login']);
+              //window.location.reload();
             },
             (error)=>{
               if(error.status===401 || error.status===401){
                 alert("You are Signout...");
                   this.tokenStorage.signOut();
                   this.router.navigate(["/"]);
+                  window.location.reload();
               }
             });
         }
         //this.reloadPage();
         this.router.navigate([this.role.replace("ROLE_","").toLowerCase()+"home"]);
-        
+        this.ngOnInit();
+        //window.location.reload();
       },
       (error:any) => {
         //this.errorMessage = error.error.message;
