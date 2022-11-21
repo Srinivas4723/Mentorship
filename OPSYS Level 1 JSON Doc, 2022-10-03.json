@@ -1,0 +1,242 @@
+{
+     "msgHdr": {
+          "msgObjIdNr": "",
+          "msgInfSrcTypCd": "",
+          "msgInfSrcTypCdDscTe": "",
+          "msgFmtNr": "",
+          "msgTs": ""
+     },
+     "smt": [
+          {
+               "smtNr": "",
+               "glbCnlClnLedSmtNr": "",
+               "glbCnlClnLedSmtIr": false,
+               "glbCnlClnSmtQy": 0,
+               "ledPkgTckNr": "",
+               "totPkgQy": "",
+               "smtTotQy": 0,
+               "smtIptCtmCtlNr": "",
+               "inBdgLocNr": "",
+               "smtPlnPuTm": "",
+               "mnfLinNr": "",
+               "smtRmkTe": "",
+               "udtUsrNr": "",
+               "udtDt": "",
+               "audUsrNr": "",
+               "smtSpcNstTe": "",
+               "bkrCd": "",
+               "bkrCdDscTe": "",
+               "aplInfSrcCd": "",
+               "aplInfSrcTypCdDscTe": "",
+               "aplSvcCd": "",
+               "aplSvcDscTe": "",
+               "smtDtyTypCd": "",
+               "smtDtyTypDscTe": "",
+               "smtTypCd": "",
+               "smtTypCdDscTe": "",
+               "cmcLocSdlElgIr": false,
+               "smtElyAmPrcIr": false,
+               "smtRtnIr": false,
+               "pkgOszIr": false,
+               "hzmQy": 0,
+               "shuTypCd": "",
+               "shuTypDscTe": "",
+               "mabNr": "",
+               "smtRef": [
+                    {
+                         "refCgyCd": "",
+                         "refCgyDscTe": "",
+                         "refNr": ""
+                    }
+               ],
+               "smtLoc": [
+                    {
+                         "pkgLocRlCd": "",
+                         "pkgLocRlDscTe": "",
+                         "ogzCnyCd": "",
+                         "ogzCnyNa": "",
+                         "ogzNr": "",
+                         "ogzNa": "",
+                         "smtDt": ""
+                    }
+               ],
+               "smtEvt": [
+                    {
+                         "smtEvtTypCd": "",
+                         "smtEvtTypDscTe": ""
+                    }
+               ],
+               "smtWgt": [
+                    {
+                         "msUseTypCd": "",
+                         "msUseTypDscTe": "",
+                         "msUntTypCd": "",
+                         "msUntTypDscTe": "",
+                         "msQy": "",
+                         "infSrcTypCd": "",
+                         "infSrcTypCdDscTe": ""
+                    }
+               ],
+               "bil": {
+                    "bilTerTypCd": "",
+                    "bilTerTypDscTe": "",
+                    "bilWgtTypCd": "",
+                    "bilWgtTypDscTe": "",
+                    "pmtMdaTypCd": "",
+                    "pmtMdaTypDscTe": "",
+                    "chgCrdExpDt": "",
+                    "pkgCodIr": false,
+                    "ccyCd": "",
+                    "codCcyNa": "",
+                    "codA": "",
+                    "dclVluA": "",
+                    "pkgAcqSrcNr": "",
+                    "pkgCtgQy": 0,
+                    "pkgAodQy": 0,
+                    "pkgNcpQy": 0,
+                    "shpDocMthCd": "",
+                    "shpDocMthDscTe": "",
+                    "smtSedCd": "",
+                    "smtSedCdDscTe": "",
+                    "smtNonRvnIr": "",
+                    "vdrCltIdRgsNr": ""
+               },
+               "asySvc": [
+                    {
+                         "asySvcTypCd": "",
+                         "asySvcTypDscTe": ""
+                    }
+               ],
+               "smtSvcChg": [
+                    {
+                         "svcChgTypCd": "",
+                         "svcChgTypDscTe": "",
+                         "ccyCd": "",
+                         "ccyNa": "",
+                         "chgA": ""
+                    }
+               ],
+               "bpy": [
+                    {
+                         "smtCusRlCd": "",
+                         "smtCusRlCdDscTe": "",
+                         "ctcNa": "",
+                         "phnNr": "",
+                         "faxNr": "",
+                         "taxNr": "",
+                         "ac": {
+                              "acCnyCd": "",
+                              "acCnyNa": "",
+                              "acNr": "",
+                              "acInfSrcTypCd": "",
+                              "acInfSrcTypTe": "",
+                              "acNa": "",
+                              "regNr": "",
+                              "regNa": "",
+                              "disNr": "",
+                              "disNa": "",
+                              "ogzCnyCd": "",
+                              "ogzCnyNa": "",
+                              "ogzNr": "",
+                              "ogzNa": ""
+                         },
+                         "ad": {
+                              "atnNa": "",
+                              "al1Te": "",
+                              "al2Te": "",
+                              "al3Te": "",
+                              "cnyCd": "",
+                              "cnyNa": "",
+                              "cnySdvCd": "",
+                              "munNa": "",
+                              "nfmPslCd": ""
+                         }
+                    }
+               ],
+               "siv": {
+                    "cogTypCd": "",
+                    "cogTypDscTe": "",
+                    "cogNr": "",
+                    "orgCnyCd": "",
+                    "orgCnyNa": "",
+                    "ccyCd": "",
+                    "ccyNa": "",
+                    "sivTotVluA": "",
+                    "sivFaxIr": false,
+                    "txgTypMnmTe": "",
+                    "txgTypDscTe": "",
+                    "icm": [
+                         {
+                              "cmyLinSeqNr": 0,
+                              "cmyLin1DscTe": "",
+                              "cmyLin2DscTe": "",
+                              "cmyLin3DscTe": "",
+                              "cmyMsUntTypCd": "",
+                              "cmyMsUntDscTe": "",
+                              "cmyQy": 0,
+                              "cmyParNr": "",
+                              "cmyVluA": "",
+                              "cmyVluCcyCd": "",
+                              "cmyVluCcyNa": "",
+                              "orgCnyCd": "",
+                              "orgCnyNa": "",
+                              "dtnCnyCd": "",
+                              "dtnCnyNa": "",
+                              "trfCmyTypNr": "",
+                              "trdLicNr": ""
+                         }
+                    ]
+               },
+               "shu": [
+                    {
+                         "pkgTckNr": "",
+                         "uloTypCd": "",
+                         "uloTypDscTe": "",
+                         "uloNr": "",
+                         "uloMvmDtnBypIr": "",
+                         "msUntTypCd": "",
+                         "msUntTypDscTe": "",
+                         "pkgBibWgtQy": "",
+                         "pkgOszIr": false,
+                         "pkgCodIr": false,
+                         "smtLedPkgIr": false,
+                         "rvnA": "",
+                         "ccyCd": "",
+                         "ccyNa": "",
+                         "shuSvcChg": [
+                              {
+                                   "svcChgTypCd": "",
+                                   "svcChgTypDscTe": "",
+                                   "ccyCd": "",
+                                   "ccyNa": "",
+                                   "chgA": ""
+                              }
+                         ]
+                    }
+               ]
+          }
+     ],
+     "mab": [
+          {
+               "mabNr": "",
+               "schMvmOrgCnyCd": "",
+               "schMvmOrgCnyNa": "",
+               "schMvmOrgOgzNr": "",
+               "schMvmOrgOgzNa": "",
+               "schMvmNr": "",
+               "schMvmSchDptDt": "",
+               "schMvmSchDptTm": "",
+               "schMvmOrgApoCd": "",
+               "schMvmDtnApoCd": "",
+               "conNr": "",
+               "couAlnTktNr": "",
+               "couNa": "",
+               "schMvmDtnCnyCd": "",
+               "schMvmDtnCnyNa": "",
+               "schMvmDtnOgzNr": "",
+               "schMvmDtnOgzNa": "",
+               "schMvmSchArrDt": "",
+               "schMvmSchArrTm": ""
+          }
+     ]
+}
